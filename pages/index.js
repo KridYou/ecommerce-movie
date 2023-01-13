@@ -19,7 +19,7 @@ export default function Home({ movies }) {
   // const product = movies.find((x) => x.id === id);
 
   const addToCartHandler = async (movie) => {
-    const existItem = state.cart.cartItems.find((x) => x.id === movies.id);
+    const existItem = state.cart.cartItems.find((x) => x.id === movie.id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
     dispatch({
       type: 'CART_ADD_ITEM',
@@ -38,6 +38,7 @@ export default function Home({ movies }) {
             >
               <h1 className="text-center">{movie.original_title}</h1>
               <img src={movie.backdrop_path} />
+              <h2>Price: {movie.id} BATH</h2>
               <button className="p-2 bg-blue-200 rounded-md m-2 hover:bg-blue-300">
                 <div onClick={addToCartHandler}>Add to Cart</div>
               </button>

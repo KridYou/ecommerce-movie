@@ -1,5 +1,7 @@
 import axios from 'axios';
+import { useContext, useReducer } from 'react';
 import Layout from './components/Layout';
+import { Store } from './utils/store';
 
 export const getStaticProps = async () => {
   const res = await fetch(
@@ -11,6 +13,20 @@ export const getStaticProps = async () => {
 };
 
 export default function Home({ movies }) {
+  const { state, dispatch } = useContext(Store);
+  const { cart } = state;
+
+  // const product = movies.find((x) => x.id === id);
+
+  const addToCartHandler = async (movie) => {
+    const existItem = state.cart.cartItems.find((x) => x.id === movies.id);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    dispatch({
+      type: 'CART_ADD_ITEM',
+      payload: { ...movie.original_title, quantity },
+    });
+  };
+
   return (
     <>
       <Layout title="Home-page">
@@ -23,7 +39,7 @@ export default function Home({ movies }) {
               <h1 className="text-center">{movie.original_title}</h1>
               <img src={movie.backdrop_path} />
               <button className="p-2 bg-blue-200 rounded-md m-2 hover:bg-blue-300">
-                <div>Add to Cart</div>
+                <div onClick={addToCartHandler}>Add to Cart</div>
               </button>
             </div>
           ))}

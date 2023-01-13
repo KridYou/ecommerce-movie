@@ -3,9 +3,11 @@ import Link from 'next/link';
 import React, { useContext, useEffect, useState } from 'react';
 
 import { FaCopyright } from 'react-icons/fa';
-import cookies from 'cookiesjs';
+import { Store } from '../utils/store';
 
 export default function Layout({ title, children }) {
+  const { state, dispatch } = useContext(Store);
+  const { cart } = state;
   return (
     <>
       <Head>
@@ -23,7 +25,14 @@ export default function Layout({ title, children }) {
             </Link>
             <div className="flex items-center">
               <Link href="/cart">
-                <div className="tag-a p-4">Cart</div>
+                <div className="tag-a p-4">
+                  Cart
+                  {cart.cartItems.length > 0 && (
+                    <span className="rounded-full bg-red-400 px-2 py-1 mx-1">
+                      {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                    </span>
+                  )}
+                </div>
               </Link>
             </div>
           </nav>
